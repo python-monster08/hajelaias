@@ -1,0 +1,235 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}View Your Questions{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <h2 class="text-center mb-5">Your Questions</h2>
+
+    {% if questions %}
+        <div class="row">
+            {% for question in questions %}
+                <div class="col-lg-12 mb-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>Question {{ question.question_number }}: 
+                                {% for exam in question.exam_name.all %}
+                                    {{ exam.name }}{% if not forloop.last %}, {% endif %}
+                                {% empty %}
+                                    No exams assigned
+                                {% endfor %}
+                                - {{ question.exam_year }}
+                            </h4>
+                            
+                        </div>
+                        <div class="card-body">
+
+                            {% if question.question_sub_type in 'simple_type true_and_false_type fill_in_the_blank_type' %}
+                                <p>{{ question.question_part }}</p>
+
+                                <p>(a) {{ question.answer_option_a }}</p>
+                                <p>(b) {{ question.answer_option_b }}</p>
+                                <p>(c) {{ question.answer_option_c }}</p>
+                                <p>(d) {{ question.answer_option_d }}</p>
+
+                                <hr>
+                                <p><strong>Correct Answer:</strong> {{ question.correct_answer_choice }}</p>
+                                <p><strong>Solution:</strong> {{ question.correct_answer_description }}</p>
+
+                            {% elif question.question_sub_type == 'r_and_a_type' %}
+                                <p>{{ question.question_part_first }}</p>
+                                <p>{{ question.reason }}</p>
+                                <p>{{ question.assertion }}</p>
+                                <p><strong> {{ question.question_part_third }} </strong></p>
+
+                                <p>(a) {{ question.answer_option_a }}</p>
+                                <p>(b) {{ question.answer_option_b }}</p>
+                                <p>(c) {{ question.answer_option_c }}</p>
+                                <p>(d) {{ question.answer_option_d }}</p>
+                                
+                                <hr>
+                                <p><strong>Correct Answer:</strong> {{ question.correct_answer_choice }}</p>
+                                <p><strong>Solution:</strong> {{ question.correct_answer_description }}</p>
+
+                            {% elif question.question_sub_type == 'list_type_1' %}
+                                <p><strong>First Part:</strong> {{ question.question_part_first }}</p>
+
+                                <ol type="1">
+                                    {% if question.list_1_row1 %}
+                                        <li>{{ question.list_1_row1 }}</li>
+                                    {% endif %}
+                                    {% if question.list_1_row2 %}
+                                        <li>{{ question.list_1_row2 }}</li>
+                                    {% endif %}
+                                    {% if question.list_1_row3 %}
+                                        <li>{{ question.list_1_row3 }}</li>
+                                    {% endif %}
+                                    {% if question.list_1_row4 %}
+                                        <li>{{ question.list_1_row4 }}</li>
+                                    {% endif %}
+                                    {% if question.list_1_row5 %}
+                                        <li>{{ question.list_1_row5 }}</li>
+                                    {% endif %}
+                                    {% if question.list_1_row6 %}
+                                        <li>{{ question.list_1_row6 }}</li>
+                                    {% endif %}
+                                    {% if question.list_1_row7 %}
+                                        <li>{{ question.list_1_row7 }}</li>
+                                    {% endif %}
+                                    {% if question.list_1_row8 %}
+                                        <li>{{ question.list_1_row8 }}</li>
+                                    {% endif %}
+                                </ol>
+                                
+
+                                <p><strong> {{ question.question_part_third }} </strong></p>
+
+                                <p>(a) {{ question.answer_option_a }}</p>
+                                <p>(b) {{ question.answer_option_b }}</p>
+                                <p>(c) {{ question.answer_option_c }}</p>
+                                <p>(d) {{ question.answer_option_d }}</p>
+
+                                <hr>
+                                <p><strong>Correct Answer:</strong> {{ question.correct_answer_choice }}</p>
+                                <p><strong>Solution:</strong> {{ question.correct_answer_description }}</p>
+
+                            {% elif question.question_sub_type == 'list_type_2' %}
+                                <p>{{ question.question_part_first }}</p>
+
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>List-I ({{ question.list_1_name }})</th>
+                                            <th>List-II ({{ question.list_2_name }})</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <ol type="A">  <!-- Alphabetical ordered list -->
+                                                    {% if question.list_1_row1 %}<li>{{ question.list_1_row1 }}</li>{% endif %}
+                                                    {% if question.list_1_row2 %}<li>{{ question.list_1_row2 }}</li>{% endif %}
+                                                    {% if question.list_1_row3 %}<li>{{ question.list_1_row3 }}</li>{% endif %}
+                                                    {% if question.list_1_row4 %}<li>{{ question.list_1_row4 }}</li>{% endif %}
+                                                    {% if question.list_1_row5 %}<li>{{ question.list_1_row5 }}</li>{% endif %}
+                                                    {% if question.list_1_row6 %}<li>{{ question.list_1_row6 }}</li>{% endif %}
+                                                    {% if question.list_1_row7 %}<li>{{ question.list_1_row7 }}</li>{% endif %}
+                                                    {% if question.list_1_row8 %}<li>{{ question.list_1_row8 }}</li>{% endif %}
+                                                </ol>
+                                            </td>
+                                            <td>
+                                                <ol type="1"> <!-- Numeric ordered list -->
+                                                    {% if question.list_2_row1 %}<li>{{ question.list_2_row1 }}</li>{% endif %}
+                                                    {% if question.list_2_row2 %}<li>{{ question.list_2_row2 }}</li>{% endif %}
+                                                    {% if question.list_2_row3 %}<li>{{ question.list_2_row3 }}</li>{% endif %}
+                                                    {% if question.list_2_row4 %}<li>{{ question.list_2_row4 }}</li>{% endif %}
+                                                    {% if question.list_2_row5 %}<li>{{ question.list_2_row5 }}</li>{% endif %}
+                                                    {% if question.list_2_row6 %}<li>{{ question.list_2_row6 }}</li>{% endif %}
+                                                    {% if question.list_2_row7 %}<li>{{ question.list_2_row7 }}</li>{% endif %}
+                                                    {% if question.list_2_row8 %}<li>{{ question.list_2_row8 }}</li>{% endif %}
+                                                </ol>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                
+                                
+
+                                <p><strong> {{ question.question_part_third }} </strong></p>
+
+                                <p>(a) {{ question.answer_option_a }}</p>
+                                <p>(b) {{ question.answer_option_b }}</p>
+                                <p>(c) {{ question.answer_option_c }}</p>
+                                <p>(d) {{ question.answer_option_d }}</p>
+
+                                <hr>
+                                <p><strong>Correct Answer:</strong> {{ question.correct_answer_choice }}</p>
+                                <p><strong>Solution:</strong> {{ question.correct_answer_description }}</p>
+
+                            {% endif %}
+
+                            <!-- Common Information -->
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <p><strong>Marks:</strong> {{ question.marks }}</p>
+                                    <p><strong>Negative Marks:</strong> {{ question.negative_marks }}</p>
+                                    <p><strong>Degree of Difficulty:</strong> {{ question.degree_of_difficulty }}</p>
+                                    <p><strong>Evergreen Index:</strong> {{ question.evergreen_index }}</p>
+                                    <p><strong>Question Sub Type:</strong> {{ question.get_question_sub_type_display }}</p>
+                                    <p><strong>Created At:</strong> {{ question.created_at }}</p>
+                                    <p><strong>Created By:</strong> {{ question.created_by }}</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <!-- Loop through exam_name ManyToManyField -->
+                                        {% for exam in question.exam_name.all %}
+                                            <h5>Exam: {{ exam.name }}</h5>
+
+                                            <!-- Display related ManyToManyField data for each exam -->
+                                            <p><strong>Subject Name(s):</strong>
+                                                {% if question.subject_name.all %}
+                                                    {% for subject in question.subject_name.all %}
+                                                        {{ subject.name }}{% if not forloop.last %}, {% endif %}
+                                                    {% empty %}
+                                                        No subjects assigned.
+                                                    {% endfor %}
+                                                {% endif %}
+                                            </p>
+
+                                            <p><strong>Area Name(s):</strong>
+                                                {% if question.area_name.all %}
+                                                    {% for area in question.area_name.all %}
+                                                        {{ area.name }}{% if not forloop.last %}, {% endif %}
+                                                    {% empty %}
+                                                        No areas assigned.
+                                                    {% endfor %}
+                                                {% endif %}
+                                            </p>
+
+                                            <p><strong>Part Name(s):</strong>
+                                                {% if question.part_name.all %}
+                                                    {% for part in question.part_name.all %}
+                                                        {{ part.name }}{% if not forloop.last %}, {% endif %}
+                                                    {% empty %}
+                                                        No parts assigned.
+                                                    {% endfor %}
+                                                {% endif %}
+                                            </p>
+
+                                            <p><strong>Chapter Name(s):</strong>
+                                                {% if question.chapter_name.all %}
+                                                    {% for chapter in question.chapter_name.all %}
+                                                        {{ chapter.name }}{% if not forloop.last %}, {% endif %}
+                                                    {% empty %}
+                                                        No chapters assigned.
+                                                    {% endfor %}
+                                                {% endif %}
+                                            </p>
+
+                                            <p><strong>Topic Name(s):</strong>
+                                                {% if question.topic_name.all %}
+                                                    {% for topic in question.topic_name.all %}
+                                                        {{ topic.name }}{% if not forloop.last %}, {% endif %}
+                                                    {% empty %}
+                                                        No topics assigned.
+                                                    {% endfor %}
+                                                {% endif %}
+                                            </p>
+
+                                            <hr> <!-- Separate each exam and its related data -->
+                                    {% endfor %}
+                                </div>
+                                
+                                                         
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="text-center">You have not added any questions yet.</p>
+    {% endif %}
+</div>
+{% endblock %}

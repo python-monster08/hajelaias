@@ -1,0 +1,64 @@
+{% load static %}
+
+
+<!-- Spinner Start -->
+<div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+    <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+        <span class="sr-only">Loading...</span>
+    </div>
+</div>
+<!-- Spinner End -->
+
+<!-- Navbar Start -->
+<nav class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
+    <a href="{% url 'index' %}" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
+        <img src="{% static 'assets/img/logo.png' %}" class="m-0 text-primary" alt="HIA Logo" width="85px"> 
+    </a>
+    <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+        <div class="navbar-nav ms-auto p-4 p-lg-0">
+            <a href="{% url 'index' %}" class="nav-item nav-link active">Home</a>
+            <a href="{% url 'about' %}" class="nav-item nav-link">About</a>
+            <a href="{% url 'courses' %}" class="nav-item nav-link">Courses</a>
+            <a href="{% url 'our-team' %}" class="nav-item nav-link">Our Team</a>
+            <div class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Gallery</a>
+                <div class="dropdown-menu fade-down m-0">
+                    <a href="{% url 'gallery_images' %}" class="dropdown-item">Images</a>
+                    <a href="{% url 'gallery_videos' %}" class="dropdown-item">Videos</a>
+                </div>
+            </div>
+            <a href="{% url 'quotes_idioms_phrases' %}" class="nav-item nav-link">View Quotes</a>
+            <a href="{% url 'contact' %}" class="nav-item nav-link">Contact</a>
+            {% if user.is_authenticated %}
+            <div class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Our Modules</a>
+                <div class="dropdown-menu fade-down m-0">
+                    <a href="{% url 'add-simple-type-question' %}" class="dropdown-item">Add Question</a>
+                    <a href="{% url 'view_questions' %}" class="dropdown-item">View Questions</a>
+                    <a href="{% url 'generate_questions' %}" class="dropdown-item">Download Uploaded Questions</a>
+                    <hr class="dropdown-divider">
+                    <a href="{% url 'add-input-suggestion' %}" class="dropdown-item">Add Input Suggestion</a>
+                    <a href="{% url 'input-suggestion-list' %}" class="dropdown-item">Check Your Input Suggestions</a>
+                    <hr class="dropdown-divider">
+                    <a href="{% url 'add_quote_idiom_phrase' %}" class="dropdown-item">Add Quote Idiom Phrase</a>
+                    
+                    <hr class="dropdown-divider">
+                    <a href="{% url 'upload-file' %}" class="dropdown-item">Upload Excel File</a>
+                    <a href="{% url 'generate-questions-document' %}" class="dropdown-item">Generate Class Plus Doc</a>
+                    <hr class="dropdown-divider">
+                    <!-- <a href="{% url 'analytics_dashboard' %}" class="dropdown-item">Analytics Dashboard</a> -->
+                    <a href="{% url 'new_dashboard_view' %}" class="dropdown-item">User Dashboard</a>
+                </div>
+            </div> 
+            <a href="{% url 'logout' %}" class="nav-item nav-link">Logout</a>
+            {% else %}
+            <a href="{% url 'login' %}" class="nav-item nav-link">Login</a>
+            {% endif %}
+        </div>
+        <a href="{% url 'contact' %}" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block">Join Now<i class="fa fa-arrow-right ms-3"></i></a>
+    </div>
+</nav>
+<!-- Navbar End -->
