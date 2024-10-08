@@ -2,6 +2,7 @@ from django.db import models
 from django.urls import reverse
 from django.contrib.auth.models import User  # Import the User model
 from django.conf import settings
+from django.utils import timezone
 
 class ExamName(models.Model):
     name = models.CharField(max_length=255)
@@ -153,8 +154,9 @@ class QuestionBank(models.Model):
     head_d_data3 = models.CharField(max_length=100, null=True, blank=True)
     head_d_data4 = models.CharField(max_length=100, null=True, blank=True)
 
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(default=timezone.now)  # Timezone-aware datetime
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True)
+
 
     def save(self, *args, **kwargs):
         if self.question_number is None:
@@ -166,7 +168,10 @@ class QuestionBank(models.Model):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"Question {self.question_number} - {self.exam_name} {self.exam_year}"
+        exam_names = ', '.join([exam.name for exam in self.exam_name.all()])  # Get all associated exam names
+        return f"Question {self.question_number} - {exam_names} {self.exam_year}"
+
+
 
 # Input Suggestion Model
 class InputSuggestion(models.Model):
@@ -179,7 +184,6 @@ class InputSuggestion(models.Model):
     question_link = models.URLField(max_length=255, blank=True, null=True)
     other_text = models.TextField(blank=True, null=True)
 
-    # Many-to-Many relationships with unique related names
     exam_name = models.ManyToManyField('ExamName', related_name='input_suggestions')
     subject_name = models.ManyToManyField('Subject', related_name='input_suggestions')
     area_name = models.ManyToManyField('Area', related_name='input_suggestions')
@@ -187,15 +191,13 @@ class InputSuggestion(models.Model):
     chapter_name = models.ManyToManyField('ChapterName', related_name='input_suggestions', blank=True)
     topic_name = models.ManyToManyField('TopicName', related_name='input_suggestions', blank=True)
 
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(default=timezone.now)  # Timezone-aware datetime
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True)
+
 
     def __str__(self):
         return self.brief_description[:50]
 
-    def get_absolute_url(self):
-        return reverse('view-input-suggestion', args=[str(self.id)])
-    
 
 class InputSuggestionImage(models.Model):
     question = models.ForeignKey(InputSuggestion, related_name='images', on_delete=models.CASCADE)
@@ -231,13 +233,9 @@ class QuoteIdiomPhrase(models.Model):
     parts = models.ManyToManyField('PartName', blank=True)
     chapters = models.ManyToManyField('ChapterName', blank=True)
     topics = models.ManyToManyField('TopicName', blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    created_by = models.ForeignKey(
-        settings.AUTH_USER_MODEL,  # Use the custom user model defined in settings
-        on_delete=models.CASCADE,
-        null=True,
-        blank=True
-    )
+    created_at = models.DateTimeField(default=timezone.now)  # Timezone-aware datetime
+    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True)
+
 
     status = models.CharField(max_length=15, choices=STATUS_CHOICES, default='pending')
     staff_approved_by = models.ForeignKey(
