@@ -1,4 +1,4 @@
-name: Django CI
+name: Django CI/CD
 
 on:
   push:
@@ -70,3 +70,25 @@ jobs:
     - name: Run tests for question_bank
       run: |
         python manage.py test question_bank.tests
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up SSH
+      uses: webfactory/ssh-agent@v0.5.3
+      with:
+        ssh-private-key: ${{ secrets.VPS_PRIVATE_KEY }}
+
+    - name: Deploy to VPS
+      run: |
+        ssh -o StrictHostKeyChecking=no ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_IP }} -p ${{ secrets.VPS_PORT }} << 'EOF'
+          cd /var/www/hia_bak
+          git pull origin main
+          docker-compose down
+          docker-compose up -d --build
+        EOF
