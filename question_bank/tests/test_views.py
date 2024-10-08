@@ -119,3 +119,4 @@ class InputSuggestionViewTest(TestCase):
         response = self.client.get(reverse('input-suggestion-list'))
         self.assertEqual(response.status_code, 200)
 
+# Write by kamlesh lovewanshi
